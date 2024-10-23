@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,7 @@ public class ExcelWriterService {
             try (FileInputStream fis = new FileInputStream(filePath);
                 XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
                 Sheet sheet = workbook.getSheetAt(0);
-                int dataIndex = 0;
-                for(String cellData : data) {
+                IntStream.range(0, data.length).forEach(dataIndex -> {
                     Row row = sheet.getRow(cells[dataIndex][0]);
                     if (row == null) {
                         row = sheet.createRow(cells[dataIndex][0]);
@@ -52,9 +52,8 @@ public class ExcelWriterService {
                     if (cell == null) {
                         cell = row.createCell(cells[dataIndex][1]);
                     }
-                    cell.setCellValue(cellData);
-                    dataIndex++;
-                }
+                    cell.setCellValue(data[dataIndex]);
+                });
                 try (FileOutputStream fos = new FileOutputStream("/Users/blaskopeter/Desktop/" + data[0] + ".xlsx")) {
                     workbook.write(fos);
                 }
