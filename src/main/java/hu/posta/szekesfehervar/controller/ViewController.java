@@ -16,10 +16,10 @@ public class ViewController {
         return "Székesfehérvár Depó - Magyar Posta Zrt";
     }
 
-    @GetMapping(value = "/excel")
-    public String excelWrite() {
-        excelWriterService.excelWriter();
-        return "Success";
+    @GetMapping(value = "/newExcel")
+    public String newExcelWrite() {
+        excelWriterService.newExcelWriter();
+        return "New success";
     }
 
 }
