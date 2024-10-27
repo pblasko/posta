@@ -18,7 +18,7 @@ public class ViewController {
 
     @GetMapping(value = "/newExcel")
     public String newExcelWrite() {
-        excelWriterService.newExcelWriter();
+        excelWriterService.createWorkSheets();
         return "New success";
     }
 

@@ -1,5 +1,7 @@
 package hu.posta.szekesfehervar.service;
 
+import hu.posta.szekesfehervar.model.EnumCells;
+import hu.posta.szekesfehervar.model.EnumURLs;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -13,34 +15,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExcelWriterService {
 
-    public static String filePath = "/Users/blaskopeter/Desktop/posta1.xlsx";
-    public static int[][] cells = {
-        {1, 3},
-        {2, 3},
-        {3, 3},
-        {4, 3},
-        {5, 3},
-        {6, 3},
-        {7, 3},
-        {8, 3},
-        {9, 3},
-        {10, 3},
-        {11, 3},
-        {12, 3},
-        {1, 4},
-        {2, 4},
-        {13, 4},
-        {14, 4}
-    };
-    public static String [][] datas = {
-        {"Bréda", "75", "", "", "No", "759", "Yes", "15", "44", "35", "", "187", "No", "75", "187", "Good"},
-        {"Kővári", "15", "2", "33", "", "", "", "15", "14", "45", "4", "187", "No", "23", "187", "Good"},
-        {"Vízvári", "75", "", "33", "No", "759", "Yes", "15", "44", "35", "", "187", "No", "75", "187", "Good"}
-    };
+    public void createWorkSheets () {
+        int [][] cells = EnumCells.WorkSheet.getTwoDimensionalArray();
+        String actual_URL = EnumURLs.WORKSHEET_URL.getUrl();
+        String [][] allData = createData();
+        excelWriter(cells, allData, actual_URL);
+    }
 
-    public void newExcelWriter () {
-        for(String [] data : datas) {
-            try (FileInputStream fis = new FileInputStream(filePath);
+    private String [][] createData () {
+        return new String[][]{
+                {"Bréda", "175", "", "", "No", "759", "Yes", "15", "44", "35", "", "187", "No", "75", "187", "Good"},
+                {"Kővári", "115", "2", "33", "", "", "", "15", "14", "45", "4", "187", "No", "23", "187", "Good"},
+                {"Vízvári", "175", "", "33", "No", "759", "Yes", "15", "44", "35", "", "187", "No", "75", "187", "Good"}
+        };
+    }
+
+    private void excelWriter (int[][] cells, String [][] allData, String file_URL) {
+        for(String [] data : allData) {
+            try (FileInputStream fis = new FileInputStream(file_URL);
                 XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
                 Sheet sheet = workbook.getSheetAt(0);
                 IntStream.range(0, data.length).forEach(dataIndex -> {
