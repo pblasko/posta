@@ -15,14 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExcelWriterService {
 
-    public void createWorkSheets () {
-        int [][] cells = EnumCells.WorkSheet.getTwoDimensionalArray();
+    public void createWorkSheets() {
+        System.out.println("step 2");
+        int[][] cells = EnumCells.WorkSheet.getTwoDimensionalArray();
         String actual_URL = EnumURLs.WORKSHEET_URL.getUrl();
-        String [][] allData = createData();
+        String[][] allData = createData();
         excelWriter(cells, allData, actual_URL);
+        System.out.println("step 3");
     }
 
-    private String [][] createData () {
+    private String[][] createData() {
         return new String[][]{
                 {"Bréda", "175", "", "", "No", "759", "Yes", "15", "44", "35", "", "187", "No", "75", "187", "Good"},
                 {"Kővári", "115", "2", "33", "", "", "", "15", "14", "45", "4", "187", "No", "23", "187", "Good"},
@@ -30,10 +32,10 @@ public class ExcelWriterService {
         };
     }
 
-    private void excelWriter (int[][] cells, String [][] allData, String file_URL) {
-        for(String [] data : allData) {
+    private void excelWriter(int[][] cells, String[][] allData, String file_URL) {
+        for (String[] data : allData) {
             try (FileInputStream fis = new FileInputStream(file_URL);
-                XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
+                 XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
                 Sheet sheet = workbook.getSheetAt(0);
                 IntStream.range(0, data.length).forEach(dataIndex -> {
                     Row row = sheet.getRow(cells[dataIndex][0]);
